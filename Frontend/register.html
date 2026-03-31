@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register | Quantity Measurement System</title>
+    <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body data-page="register">
+    <div class="auth-layout">
+        <section class="auth-showcase gradient-panel">
+            <div>
+                <span class="eyebrow">Registration Page</span>
+                <h1>Create your account in seconds.</h1>
+                <p>Register once and immediately start working with quantity conversions and personal history tracking.</p>
+            </div>
+            <ul class="check-list">
+                <li>JWT token handling</li>
+                <li>Friendly validation feedback</li>
+                <li>API-connected workflow</li>
+                <li>Professional responsive layout</li>
+            </ul>
+        </section>
+
+        <main class="auth-main">
+            <div class="auth-card card">
+                <div class="auth-topbar">
+                    <a href="./index.html" class="back-link">← Back</a>
+                </div>
+                <div class="section-heading">
+                    <span class="eyebrow">New account</span>
+                    <h2>Register</h2>
+                    <p>Fill in your details and continue to the dashboard.</p>
+                </div>
+
+                <div id="authMessage" class="inline-message hidden" role="alert"></div>
+
+                <form id="registerForm" class="form-stack" novalidate>
+                    <label>
+                        <span>Username</span>
+                        <input id="registerUsername" type="text" name="username" placeholder="Choose a username" required />
+                    </label>
+                    <label>
+                        <span>Email</span>
+                        <input id="registerEmail" type="email" name="email" placeholder="name@example.com" required />
+                    </label>
+                    <label>
+                        <span>Password</span>
+                        <input id="registerPassword" type="password" name="password" placeholder="At least 6 characters" required />
+                    </label>
+                    <label>
+                        <span>Confirm Password</span>
+                        <input id="registerConfirmPassword" type="password" name="confirmPassword" placeholder="Re-enter password" required />
+                    </label>
+                    <button id="registerButton" type="submit" class="btn btn-primary btn-block">
+                        <span class="btn-label">Create Account</span>
+                    </button>
+                </form>
+
+                <p class="helper-text">Already registered? <a href="./login.html">Login here</a>.</p>
+            </div>
+        </main>
+    </div>
+
+    <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+    <script type="module" src="./js/auth.js"></script>
+</body>
+</html>

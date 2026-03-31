@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | Quantity Measurement System</title>
+    <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body data-page="login">
+    <div class="auth-layout">
+        <section class="auth-showcase gradient-panel">
+            <div>
+                <span class="eyebrow">Measure AnyThing</span>
+                <h1>Sign in to your quantity workspace.</h1>
+                <p>Access your JWT-protected dashboard and continue working with your own operations history.</p>
+            </div>
+            <ul class="check-list">
+                <li>Clean dashboard UI</li>
+                <li> Responsive design</li>
+                <li> User-specific history</li>
+                <li> Smooth loading states</li>
+            </ul>
+        </section>
+
+        <main class="auth-main">
+            <div class="auth-card card">
+                <div class="auth-topbar">
+                    <a href="./index.html" class="back-link">← Back</a>
+                </div>
+                <div class="section-heading">
+                    <span class="eyebrow">Welcome back</span>
+                    <h2>Login</h2>
+                    <p>Enter your credentials to continue.</p>
+                </div>
+
+                <div id="authMessage" class="inline-message hidden" role="alert"></div>
+
+                <form id="loginForm" class="form-stack" novalidate>
+                    <label>
+                        <span>Email</span>
+                        <input id="loginEmail" type="email" name="email" placeholder="name@example.com" required />
+                    </label>
+                    <label>
+                        <span>Password</span>
+                        <input id="loginPassword" type="password" name="password" placeholder="Enter your password" required />
+                    </label>
+                    <button id="loginButton" type="submit" class="btn btn-primary btn-block">
+                        <span class="btn-label">Login</span>
+                    </button>
+                </form>
+
+                <p class="helper-text">Don't have an account? <a href="./register.html">Register here</a>.</p>
+            </div>
+        </main>
+    </div>
+
+    <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+    <script type="module" src="./js/auth.js"></script>
+</body>
+</html>

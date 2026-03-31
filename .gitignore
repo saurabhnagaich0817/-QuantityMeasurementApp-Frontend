@@ -1,78 +1,20 @@
 # =========================
-# Build Folders
+# Ignore EVERYTHING
 # =========================
-bin/
-obj/
-Debug/
-Release/
+*
 
 # =========================
-# User-specific files
+# Allow required files/folders
 # =========================
-*.user
-*.suo
-*.userprefs
+
+# Allow README
+!README.md
+
+# Allow Frontend folder
+!Frontend/
+!Frontend/**
 
 # =========================
-# Visual Studio Code
+# Allow .gitignore itself
 # =========================
-.vscode/
-
-# =========================
-# Visual Studio
-# =========================
-.vs/
-*.vcxproj.user
-
-# =========================
-# Rider
-# =========================
-.idea/
-
-# =========================
-# Logs
-# =========================
-*.log
-
-# =========================
-# OS Generated Files
-# =========================
-.DS_Store
-Thumbs.db
-
-# =========================
-# NuGet Packages
-# =========================
-*.nupkg
-packages/
-.nuget/
-
-# =========================
-# Entity Framework Migrations (optional)
-# =========================
-# Uncomment if you don't want migrations tracked
-# Migrations/
-
-# =========================
-# Database Files
-# =========================
-*.mdf
-*.ldf
-
-# =========================
-# Publish Folder
-# =========================
-publish/
-*.publishsettings
-
-# =========================
-# Test Results
-# =========================
-TestResults/
-
-# =========================
-# Temporary Files
-# =========================
-*.tmp
-*.temp
-QuantityMeasurement.Api/
+!.gitignore
