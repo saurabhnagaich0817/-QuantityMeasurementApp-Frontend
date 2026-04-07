@@ -10,7 +10,7 @@ import { QuantityService } from '../../../core/services/quantity.service';
   template: `
     <div class="container">
       <div class="card">
-        <h1> Addition</h1>
+        <h1>➕ Addition</h1>
         <p class="subtitle">Add two quantities with automatic unit conversion</p>
 
         <div class="form-group">
@@ -50,22 +50,17 @@ import { QuantityService } from '../../../core/services/quantity.service';
           {{ isLoading ? ' Calculating...' : ' Calculate' }}
         </button>
 
-        <div class="result-area" *ngIf="result && !isLoading">
-          <div class="result-box" *ngIf="!result.isError">
+        <div class="result-area" *ngIf="result">
+          <div class="result-box">
             <div class="result-label"> RESULT</div>
             <div class="result-value">
               {{ firstValue }} {{ firstUnit }} + {{ secondValue }} {{ secondUnit }} = 
-              <span class="answer">{{ result.result }} {{ result.resultUnit || resultUnit || firstUnit }}</span>
-            </div>
-            <div class="result-meta">
-              <span> ID: {{ result.id }}</span>
-              <span> {{ result.createdAt | date:'medium' }}</span>
+              <span class="answer">{{ result.result }} {{ result.resultUnit }}</span>
             </div>
           </div>
-          <div class="error-box" *ngIf="result.isError"> {{ result.errorMessage }}</div>
         </div>
 
-        <div class="error-area" *ngIf="errorMessage && !isLoading">
+        <div class="error-area" *ngIf="errorMessage">
           <div class="error-box"> {{ errorMessage }}</div>
         </div>
       </div>
@@ -86,14 +81,12 @@ import { QuantityService } from '../../../core/services/quantity.service';
     .operator { font-size: 48px; font-weight: bold; color: #667eea; }
     .btn-calculate { width: 100%; padding: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: 600; cursor: pointer; transition: transform 0.2s; margin-top: 10px; }
     .btn-calculate:hover { transform: translateY(-2px); }
-    .btn-calculate:disabled { opacity: 0.6; cursor: not-allowed; }
     .result-area { margin-top: 30px; }
-    .result-box { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius: 16px; padding: 24px; text-align: center; border: 2px solid #4caf50; animation: fadeIn 0.4s ease; }
+    .result-box { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius: 16px; padding: 24px; text-align: center; border: 2px solid #4caf50; animation: fadeIn 0.3s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
     .result-label { font-size: 14px; font-weight: 600; color: #2e7d32; letter-spacing: 2px; margin-bottom: 12px; }
     .result-value { font-size: 20px; margin: 15px 0; }
     .answer { font-size: 32px; font-weight: bold; color: #4caf50; background: white; padding: 8px 20px; border-radius: 40px; display: inline-block; margin-left: 10px; }
-    .result-meta { margin-top: 15px; color: #555; font-size: 12px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
     .error-box { background: #ffebee; border-radius: 16px; padding: 20px; text-align: center; color: #c62828; border: 2px solid #f44336; }
     @media (max-width: 600px) { .card { padding: 24px; } .row { flex-direction: column; } .operator-box { justify-content: center; margin: 10px 0; } .answer { font-size: 20px; margin-left: 0; margin-top: 10px; display: inline-block; } }
   `]
@@ -135,13 +128,11 @@ export class AddComponent {
     this.firstUnit = this.availableUnits[0] || 'cm';
     this.secondUnit = this.availableUnits[0] || 'cm';
     this.result = null;
-    this.errorMessage = '';
   }
 
   calculate() {
-    this.result = null;
-    this.errorMessage = '';
     this.isLoading = true;
+    this.result = null;
 
     const request = {
       first: { value: Number(this.firstValue), unit: this.firstUnit, measurementType: this.measurementType },
@@ -155,7 +146,7 @@ export class AddComponent {
         this.isLoading = false;
       },
       error: (err) => {
-        this.errorMessage = err.error?.detail || err.message || 'Addition failed';
+        this.errorMessage = err.message || 'Addition failed';
         this.isLoading = false;
       }
     });

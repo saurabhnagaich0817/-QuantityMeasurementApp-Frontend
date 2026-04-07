@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { QuantityService } from '../../core/services/quantity.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { QuantityService } from '../../core/services/quantity.service';
   template: `
     <div class="container">
       <div class="card">
-        <h1> Operation History</h1>
+        <h1>Operation History</h1>
         <p class="subtitle">View all your quantity measurement operations</p>
 
         <div class="filters">
@@ -20,20 +20,18 @@ import { QuantityService } from '../../core/services/quantity.service';
             <option value="Add">Addition (+)</option>
             <option value="Subtract">Subtraction (-)</option>
             <option value="Divide">Division (÷)</option>
-            <option value="Compare">Comparison ()</option>
+            <option value="Compare">Comparison (⚖️)</option>
             <option value="Convert">Conversion ()</option>
           </select>
           <button (click)="refresh()" class="refresh-btn">⟳ Refresh</button>
+          <button (click)="clearHistory()" class="clear-btn"> Clear All</button>
         </div>
 
         <div class="stats">
           <div class="stat"> Total: {{ filteredOps.length }}</div>
-          <div class="stat success">Success: {{ successCount }}</div>
-          <div class="stat error"> Errors: {{ errorCount }}</div>
         </div>
 
         <div class="loading" *ngIf="isLoading"> Loading your history...</div>
-        <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
 
         <div class="empty" *ngIf="!isLoading && filteredOps.length === 0">
           <p>No operations found. Start performing operations!</p>
@@ -75,13 +73,12 @@ import { QuantityService } from '../../core/services/quantity.service';
     .subtitle { text-align: center; color: #666; margin-bottom: 30px; }
     .filters { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
     .filter-select { flex: 1; padding: 12px; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 16px; background: white; cursor: pointer; }
-    .refresh-btn { padding: 12px 24px; background: #667eea; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 16px; }
-    .stats { display: flex; gap: 20px; margin-bottom: 25px; padding: 15px 20px; background: #f8f9fa; border-radius: 12px; }
+    .refresh-btn, .clear-btn { padding: 12px 24px; border: none; border-radius: 12px; cursor: pointer; font-size: 16px; }
+    .refresh-btn { background: #667eea; color: white; }
+    .clear-btn { background: #f44336; color: white; }
+    .stats { margin-bottom: 25px; padding: 15px 20px; background: #f8f9fa; border-radius: 12px; }
     .stat { font-weight: 500; }
-    .stat.success { color: #4caf50; }
-    .stat.error { color: #f44336; }
     .loading, .empty { text-align: center; padding: 50px; color: #666; }
-    .error { background: #ffebee; color: #c62828; padding: 15px; border-radius: 12px; text-align: center; }
     .history-list { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
     .history-item { border: 1px solid #eee; border-radius: 16px; padding: 20px; transition: all 0.2s; background: white; }
     .history-item:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateX(4px); }
@@ -107,15 +104,11 @@ import { QuantityService } from '../../core/services/quantity.service';
 })
 export class HistoryComponent implements OnInit {
   private quantityService = inject(QuantityService);
-  private router = inject(Router);
   
   allOps: any[] = [];
   filteredOps: any[] = [];
   filterOperation = 'all';
   isLoading = true;
-  errorMessage = '';
-  successCount = 0;
-  errorCount = 0;
 
   ngOnInit() {
     this.loadHistory();
@@ -123,37 +116,36 @@ export class HistoryComponent implements OnInit {
 
   loadHistory() {
     this.isLoading = true;
-    this.errorMessage = '';
-    
     this.quantityService.getUserOperations().subscribe({
       next: (res) => {
-        console.log('History loaded:', res);
-        this.allOps = res || [];
+        this.allOps = res;
         this.applyFilter();
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('History error:', err);
-        this.errorMessage = err.error?.detail || err.message || 'Failed to load history';
+        console.error(err);
         this.isLoading = false;
-        this.allOps = [];
-        this.filteredOps = [];
       }
     });
   }
 
   applyFilter() {
     if (this.filterOperation === 'all') {
-      this.filteredOps = [...this.allOps];
+      this.filteredOps = this.allOps;
     } else {
       this.filteredOps = this.allOps.filter(op => op.operation === this.filterOperation);
     }
-    this.successCount = this.filteredOps.filter(op => !op.isError).length;
-    this.errorCount = this.filteredOps.filter(op => op.isError).length;
   }
 
   refresh() {
     this.loadHistory();
+  }
+
+  clearHistory() {
+    if (confirm('Are you sure you want to clear all history? This cannot be undone.')) {
+      this.quantityService.clearHistory();
+      this.loadHistory();
+    }
   }
 
   getIcon(op: string): string {
